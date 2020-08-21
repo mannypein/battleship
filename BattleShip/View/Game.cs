@@ -38,7 +38,6 @@ namespace BattleShip
         ComputerController computer;
         Point startedPosition;
         Point shotPosition;
-        public int gridSize;
 
 
         public static bool MuteClicked { get; set; }
@@ -51,13 +50,12 @@ namespace BattleShip
                 GameMode.MOVABLESHIPS
             };
 
-            //Grid stuff
-            gridSize = 10;
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();
             player = new PlayerController(gameModes);
             player.dgvPlayer = dgvPlayer;
+            player.Turn = Turn;
             isFinished = false;
             score = 0;
             computer = new ComputerController(gameModes);

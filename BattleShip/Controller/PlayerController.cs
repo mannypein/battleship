@@ -18,6 +18,7 @@ namespace BattleShip.Controller
         public bool found;
         public int shots;
         public DataGridView dgvPlayer;
+        public bool Turn;
         private enum Direction
         {
             DOWN,
@@ -275,28 +276,35 @@ namespace BattleShip.Controller
                 }
             }
 
-            if(shots < 4)
-            {
-                shots++;
-            }
-            else
-            {
-                GenerateRandom(grid);
-
-            }
-            //computer turn
             //this is where we can move a ship
             if (activeGameModes.Contains(GameMode.MOVABLESHIPS))
             {
                 turn++;
                 if (turn % 5 == 0)
                 {
+                    Turn = true;
                     EnableCells(dgvPlayer);
                 }
                 else
                 {
+                    Turn = false;
                     DisableCells(dgvPlayer);
                 }
+            }
+
+
+            //computer turn
+            if (activeGameModes.Contains(GameMode.SPEEDYRULES) && shots < 4)
+            {
+                shots++;
+            }
+            else if (activeGameModes.Contains(GameMode.SPEEDYRULES) && shots < 8)
+            {
+                GenerateRandom(grid);
+            }
+            else
+            {
+                GenerateRandom(grid);
             }
         }
 

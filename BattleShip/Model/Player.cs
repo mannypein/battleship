@@ -35,6 +35,7 @@ namespace BattleShip.Controller
             this.activeGameModes = gameModes;
 
             this.gridSize = activeGameModes.Contains(GameMode.BIGBOARD) ? 20 : 10;
+            if (gameModes.Contains(GameMode.FOGOVERFISHERBANK)) this.gridSize = 8;
 
             this.amounts = new List<int>();
             this.positions = new List<Point>();
