@@ -49,11 +49,9 @@ namespace BattleShip
         {
             List<GameMode> gameModes = new List<GameMode>
             {
-                GameMode.MOVABLESHIPS
+                //GameMode.FOGOVERFISHERBANK
             };
 
-            //Grid stuff
-            gridSize = 10;
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();

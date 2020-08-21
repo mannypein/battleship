@@ -59,12 +59,15 @@ namespace BattleShip.Controller
                     }
                 }
                 DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                imgCell.Value = Properties.Resources.dotImage;
-
-                // if FOFB do this instead of line above
-                //string file = string.Format("_{0}", GetShipCount(position));
-                //imgCell.Value = Properties.Resources.ResourceManager.GetObject(file);
-
+                if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+                {
+                    string file = string.Format("_{0}", GetShipCount(position));
+                    imgCell.Value = Properties.Resources.ResourceManager.GetObject(file);
+                }
+                else
+                {
+                    imgCell.Value = Properties.Resources.dotImage;
+                }
                 missedPositions.Add(position);
                 grid.Rows[position.X].Cells[position.Y] = imgCell;
 
@@ -97,8 +100,14 @@ namespace BattleShip.Controller
 
         public void ShowShips(DataGridView grid)
         {
-            //ships.ForEach(ship => ship.enemyShipsDraw(grid));
-            ships.ForEach(ship => ship.enemyShipsDrawFOFB(grid, ships));
+            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+            {
+                ships.ForEach(ship => ship.enemyShipsDrawFOFB(grid, ships));
+            }
+            else
+            {
+                ships.ForEach(ship => ship.enemyShipsDraw(grid));
+            }
         }
 
         public void ShowEndShips(DataGridView grid)

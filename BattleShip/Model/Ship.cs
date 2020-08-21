@@ -23,6 +23,7 @@ namespace BattleShip.Model
         public List<Point> viewPoints { get; set; }
         private Point shotPosition;
         public int gridSize;
+        public bool isSunkInSilenceMode;
 
         public Ship(int size, Color color, Point position, View type, int boardSize)
         {
