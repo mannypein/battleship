@@ -32,7 +32,14 @@ namespace BattleShip.Controller
                         if (ship.Destroyed())
                         {
                             selected = ship;
-                            RemoveDeadShip();
+                            if (activeGameModes.Contains(GameMode.SUNKINSILENCE))
+                            {
+                                RemoveDeadPoints(position);
+                            }
+                            else
+                            {
+                                RemoveDeadShip();
+                            }
                             selected = null;
                             Game.score += 500;
                         }
@@ -100,13 +107,20 @@ namespace BattleShip.Controller
 
         public void ShowShips(DataGridView grid)
         {
-            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+            if (!activeGameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                ships.ForEach(ship => ship.enemyShipsDrawFOFB(grid, ships));
+                if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+                {
+                    ships.ForEach(ship => ship.enemyShipsDrawFOFB(grid, ships));
+                }
+                else
+                {
+                    ships.ForEach(ship => ship.enemyShipsDraw(grid));
+                }
             }
             else
             {
-                ships.ForEach(ship => ship.enemyShipsDraw(grid));
+                ships.ForEach(ship => ship.sunkInSilenceDraw(grid));
             }
         }
 

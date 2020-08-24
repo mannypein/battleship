@@ -256,6 +256,18 @@ namespace BattleShip.Model
             }
         }
 
+        public void sunkInSilenceDraw(DataGridView grid)
+        {
+            foreach (Cell cell in Cells)
+            {
+                if (!cell.Alive)
+                {
+                    grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
+                    ShowDeadCells(grid, cell.Positon);
+                }
+            }
+        }
+
         public void enemyShipsDrawFOFB(DataGridView grid, List<Ship> ships)
         {
             if (Destroyed())

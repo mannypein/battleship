@@ -100,9 +100,12 @@ namespace BattleShip.Controller
 
         public void RemoveDeadShip()
         {
-            foreach (Point point in selected.viewPoints)
+            if (!activeGameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                positions.Remove(point);
+                foreach (Point point in selected.viewPoints)
+                {
+                    positions.Remove(point);
+                }
             }
         }
 
