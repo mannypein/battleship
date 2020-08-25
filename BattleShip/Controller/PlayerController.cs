@@ -16,9 +16,12 @@ namespace BattleShip.Controller
         private Point shot;
         private Point first;
         public bool found;
-        public int shots;
         public DataGridView dgvPlayer;
         public bool Turn;
+
+        public List<Point> blocked;
+        public List<Ship> movable;
+
         private enum Direction
         {
             DOWN,
@@ -33,7 +36,12 @@ namespace BattleShip.Controller
             isPlayer = true;
             selected = null;
             shot = new Point();
+
+            movable = ships;
+            blocked = new List<Point>();
+
             Random();
+
         }
         public void ShowShips(DataGridView grid)
         {
@@ -297,18 +305,8 @@ namespace BattleShip.Controller
 
 
             //computer turn
-            if (activeGameModes.Contains(GameMode.SPEEDYRULES) && shots < 4)
-            {
-                shots++;
-            }
-            else if (activeGameModes.Contains(GameMode.SPEEDYRULES) && shots < 8)
-            {
-                GenerateRandom(grid);
-            }
-            else
-            {
-                GenerateRandom(grid);
-            }
+            GenerateRandom(grid);
+            
         }
 
         private void GenerateRandom(DataGridView grid)
@@ -349,6 +347,12 @@ namespace BattleShip.Controller
         {
             DataGridViewImageCell imgCell = new DataGridViewImageCell();
             imgCell.Value = Properties.Resources.dotImage;
+            if (activeGameModes.Contains(GameMode.MOVABLESHIPS))
+            {
+
+            }
+
+
 
             // if FOFB do this instead of line above
             //string file = string.Format("_{0}", GetShipCount(position));
