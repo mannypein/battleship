@@ -22,6 +22,7 @@ namespace BattleShip.Controller
         public List<Point> missedPositions;
         public Ship selected;
         public int gridSize;
+
         public int turn;
         public List<GameMode> activeGameModes;
 
@@ -39,7 +40,7 @@ namespace BattleShip.Controller
                 gridSize = 20;
             else
                 gridSize = 10;
-            //this.gridSize = activeGameModes.Contains(GameMode.BIGBOARD) ? 20 : 10;
+
 
             this.amounts = new List<int>();
             this.positions = new List<Point>();

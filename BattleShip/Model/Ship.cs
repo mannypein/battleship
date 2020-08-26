@@ -73,6 +73,7 @@ namespace BattleShip.Model
             AddViewPoints();
         }
 
+
         private void AddImages()
         {
             for (int i = 0; i < Size; i++)

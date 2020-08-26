@@ -16,8 +16,12 @@ namespace BattleShip.Controller
         private Point shot;
         private Point first;
         public bool found;
-        public int shots;
         public DataGridView dgvPlayer;
+        public bool Turn;
+
+        public List<Point> blocked;
+        public List<Ship> movable;
+
         private enum Direction
         {
             DOWN,
@@ -32,7 +36,12 @@ namespace BattleShip.Controller
             isPlayer = true;
             selected = null;
             shot = new Point();
+
+            movable = ships;
+            blocked = new List<Point>();
+
             Random();
+
         }
         public void ShowShips(DataGridView grid)
         {
@@ -290,29 +299,26 @@ namespace BattleShip.Controller
                 }
             }
 
-            if(shots < 4)
-            {
-                shots++;
-            }
-            else
-            {
-                GenerateRandom(grid);
-
-            }
-            //computer turn
             //this is where we can move a ship
             if (activeGameModes.Contains(GameMode.MOVABLESHIPS))
             {
                 turn++;
                 if (turn % 5 == 0)
                 {
+                    Turn = true;
                     EnableCells(dgvPlayer);
                 }
                 else
                 {
+                    Turn = false;
                     DisableCells(dgvPlayer);
                 }
             }
+
+
+            //computer turn
+            GenerateRandom(grid);
+            
         }
 
         private void GenerateRandom(DataGridView grid)
@@ -352,6 +358,7 @@ namespace BattleShip.Controller
         private void UpdateGrid(Point position, DataGridView grid)
         {
             DataGridViewImageCell imgCell = new DataGridViewImageCell();
+
             if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
             {
                 string file = string.Format("_{0}", GetShipCount(position));
@@ -361,6 +368,7 @@ namespace BattleShip.Controller
             {
                 imgCell.Value = Properties.Resources.dotImage;
             }
+
             grid.Rows[position.X].Cells[position.Y] = imgCell;
             missedPositions.Add(position);
             System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Properties.Resources.miss);

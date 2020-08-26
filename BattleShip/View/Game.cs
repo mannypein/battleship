@@ -45,6 +45,7 @@ namespace BattleShip
             GameMode.SUNKINSILENCE
         };
 
+
         public static bool MuteClicked { get; set; }
         private bool saved = false;
 
@@ -55,6 +56,7 @@ namespace BattleShip
             InitializeComponent();
             player = new PlayerController(gameModes);
             player.dgvPlayer = dgvPlayer;
+            player.Turn = Turn;
             isFinished = false;
             score = 0;
             computer = new ComputerController(gameModes);
@@ -72,7 +74,7 @@ namespace BattleShip
             }
         }
 
-        
+
 
         public static Cursor LoadCursorFromResource()
         {
@@ -124,13 +126,17 @@ namespace BattleShip
             }
         }
 
+        //TODO here
         private void dgvPlayer_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
         {
             Point position = new Point { X = e.RowIndex, Y = e.ColumnIndex };
 
-            if (player.selected != null)
+            //player selected is the ship the player selected
+
+            if (player.selected != null && player.movable.Contains(player.selected))
             {
                 player.selected.AddPositions(position);
+
                 if (player.SearchShip())
                 {
                     Cursor.Current = Cursors.No;
@@ -141,6 +147,7 @@ namespace BattleShip
                 }
                 ShowPlayerView();
             }
+
             if (player.SearchShip(position))
             {
                 Cursor.Current = Cursors.SizeAll;
@@ -308,20 +315,22 @@ namespace BattleShip
         {
             if (GameStarted)
             {
-                     shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
-                     if (i >= 3)
-                     {
-                        computer.Shoot(shotPosition, dgvComputer);
-                         Turn = false;
-                         dgvComputer.Enabled = false;
-                         i = 0;
-                     }
+                shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
+
+                if (gameModes.Contains(GameMode.SPEEDYRULES) && i >= 3)
+                {
+                    computer.Shoot(shotPosition, dgvComputer);
+                    Turn = false;
+                    dgvComputer.Enabled = false;
+                    i = 0;
+                }
                 else
                 {
-                        computer.Shoot(shotPosition, dgvComputer);
+                    computer.Shoot(shotPosition, dgvComputer);
                     i++;
                 }
-                      computer.ShowShips(dgvComputer);
+
+                computer.ShowShips(dgvComputer);
             }
         }
 
@@ -352,15 +361,28 @@ namespace BattleShip
             {
                 lblScore.Text = score.ToString();
                 if (score < 0)
-                {
-                    score = 0;
 
-                }
-                if (score > 0)
                 {
-                    lblScore.ForeColor = Color.Green;
+                    Turn = !player.found;
+                    i = 0;
+                }
+                else
+                {
+                    i++;
                 }
             }
+            player.ShowShips(dgvPlayer);
+            lblScore.Text = score.ToString();
+            if (score < 0)
+            {
+                score = 0;
+
+            }
+            if (score > 0)
+            {
+                lblScore.ForeColor = Color.Green;
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
