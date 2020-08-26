@@ -163,6 +163,21 @@ namespace BattleShip.Model
             }
         }
 
+        public void sunkInSilencePlayer(DataGridView grid)
+        {
+            foreach (Cell cell in Cells)
+            {
+                DataGridViewImageCell imgCell = new DataGridViewImageCell();
+                imgCell.Value = cell.Img;
+                grid.Rows[cell.Positon.X].Cells[cell.Positon.Y] = imgCell;
+                if (!cell.Alive)
+                {
+                    grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
+                    ShowDeadCells(grid, cell.Positon);
+                }
+            }
+        }
+
         public void ShowShipFOFB(DataGridView grid, List<Ship> ships)
         {
             if (Destroyed())

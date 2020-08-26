@@ -31,8 +31,8 @@ namespace BattleShip
             InitializeComponent();
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             btnContinue.Enabled = File.Exists(path + "/game.bs");
-            MuteClicked = false;
-            sound.PlayLooping();
+            MuteClicked = true;
+            //sound.PlayLooping();
             hovered = false;
             if (!hovered)
                 this.Cursor = LoadCursorFromResource();

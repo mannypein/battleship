@@ -36,13 +36,20 @@ namespace BattleShip.Controller
         }
         public void ShowShips(DataGridView grid)
         {
-            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+            if (!activeGameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                ships.ForEach(ship => ship.ShowShipFOFB(grid, ships));
+                if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+                {
+                    ships.ForEach(ship => ship.ShowShipFOFB(grid, ships));
+                }
+                else
+                {
+                    ships.ForEach(ship => ship.ShowShip(grid));
+                }
             }
             else
             {
-                ships.ForEach(ship => ship.ShowShip(grid));
+                ships.ForEach(ship => ship.sunkInSilencePlayer(grid));
             }
         }
 
@@ -149,7 +156,7 @@ namespace BattleShip.Controller
                     }
                 }
 
-                if (direction == Direction.UP)
+                else if (direction == Direction.UP)
                 {
                     if (positions.Contains(new Point { X = shot.X - 1, Y = shot.Y }))
                     {
@@ -194,7 +201,7 @@ namespace BattleShip.Controller
                     return;
                 }
 
-                if (direction == Direction.LEFT)
+                else if (direction == Direction.LEFT)
                 {
                     if (positions.Contains(new Point { X = shot.X, Y = shot.Y - 1 }))
                     {
@@ -236,7 +243,7 @@ namespace BattleShip.Controller
                     }
                 }
 
-                if (direction == Direction.RIGHT)
+                else if (direction == Direction.RIGHT)
                 {
                     if (positions.Contains(new Point { X = shot.X, Y = shot.Y + 1 }))
                     {
