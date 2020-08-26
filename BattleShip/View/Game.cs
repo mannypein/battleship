@@ -38,20 +38,19 @@ namespace BattleShip
         ComputerController computer;
         Point startedPosition;
         Point shotPosition;
-
         private static int i = 0;
-        public List<GameMode> gameModes;
+        public int gridSize;
+        public List<GameMode> gameModes = new List<GameMode>
+        {
+            GameMode.SUNKINSILENCE
+        };
+
 
         public static bool MuteClicked { get; set; }
         private bool saved = false;
 
         public Game()
         {
-            gameModes = new List<GameMode>
-            {
-                GameMode.MOVABLESHIPS
-            };
-
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();
@@ -68,7 +67,11 @@ namespace BattleShip
             ShowPlayerView();
             ShowComputerView();
             this.Cursor = LoadCursorFromResource();
-
+            if (gameModes.Contains(GameMode.SUNKINSILENCE))
+            {
+                lblScore.Hide();
+                label3.Hide();
+            }
         }
 
 
@@ -237,19 +240,21 @@ namespace BattleShip
         private void ComputerTimer_Tick(object sender, EventArgs e)
         {
             label2.Text = Turn ? "Your turn" : "Bot's turn";
-            lblScore.Text = score.ToString();
-            if (score < 0)
+            // if it is Sunk in Silence it will not show the user the score
+            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                lblScore.ForeColor = Color.Red;
+                lblScore.Text = score.ToString();
+                if (score < 0)
+                {
+                    lblScore.ForeColor = Color.Red;
 
+                }
+                else if (score > 0)
+                {
+                    lblScore.ForeColor = Color.Green;
+                }
             }
-            else if (score > 0)
-            {
 
-                lblScore.ForeColor = Color.Green;
-
-
-            }
             if (!Turn)
             {
                 dgvComputer.Enabled = false;
@@ -337,14 +342,26 @@ namespace BattleShip
 
         private void ShootTimer_Tick(object sender, EventArgs e)
         {
-
+            
             Random random = new Random();
             ShootTimer.Interval = random.Next(1000, 2000);
-
             player.Shoot(dgvPlayer);
-            if (gameModes.Contains(GameMode.SPEEDYRULES))
+            if(i >= 3)
             {
-                if (i >= 3)
+                Turn = !player.found;
+                i = 0;
+            }
+            else
+            {
+                i++;
+            }
+            player.ShowShips(dgvPlayer);
+
+            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
+            {
+                lblScore.Text = score.ToString();
+                if (score < 0)
+
                 {
                     Turn = !player.found;
                     i = 0;
