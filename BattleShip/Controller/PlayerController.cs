@@ -19,8 +19,8 @@ namespace BattleShip.Controller
         public DataGridView dgvPlayer;
         public bool Turn;
 
-        public List<Point> blocked;
-        public List<Ship> movable;
+        public List<Point> blocked = new List<Point>();
+        public List<Ship> movable = new List<Ship>();
 
         private enum Direction
         {
@@ -37,10 +37,10 @@ namespace BattleShip.Controller
             selected = null;
             shot = new Point();
 
-            movable = ships;
             blocked = new List<Point>();
 
             Random();
+            movable = ships;
 
         }
         public void ShowShips(DataGridView grid)
