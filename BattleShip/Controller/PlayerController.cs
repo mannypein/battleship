@@ -16,8 +16,12 @@ namespace BattleShip.Controller
         private Point shot;
         private Point first;
         public bool found;
-        public int shots;
         public DataGridView dgvPlayer;
+        public bool Turn;
+
+        public List<Point> blocked = new List<Point>();
+        public List<Ship> movable = new List<Ship>();
+
         private enum Direction
         {
             DOWN,
@@ -32,13 +36,30 @@ namespace BattleShip.Controller
             isPlayer = true;
             selected = null;
             shot = new Point();
+
+            blocked = new List<Point>();
+
             Random();
+            movable = ships;
+
         }
         public void ShowShips(DataGridView grid)
         {
-            ships.ForEach(ship => ship.ShowShip(grid));
-            // if FOFB do instead of line above
-            // ships.ForEach(ship => ship.ShowShipFOFB(grid, ships));
+            if (!activeGameModes.Contains(GameMode.SUNKINSILENCE))
+            {
+                if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+                {
+                    ships.ForEach(ship => ship.ShowShipFOFB(grid, ships));
+                }
+                else
+                {
+                    ships.ForEach(ship => ship.ShowShip(grid));
+                }
+            }
+            else
+            {
+                ships.ForEach(ship => ship.sunkInSilencePlayer(grid));
+            }
         }
 
         public void ShowSelectedShip(DataGridView grid)
@@ -144,7 +165,7 @@ namespace BattleShip.Controller
                     }
                 }
 
-                if (direction == Direction.UP)
+                else if (direction == Direction.UP)
                 {
                     if (positions.Contains(new Point { X = shot.X - 1, Y = shot.Y }))
                     {
@@ -189,7 +210,7 @@ namespace BattleShip.Controller
                     return;
                 }
 
-                if (direction == Direction.LEFT)
+                else if (direction == Direction.LEFT)
                 {
                     if (positions.Contains(new Point { X = shot.X, Y = shot.Y - 1 }))
                     {
@@ -231,7 +252,7 @@ namespace BattleShip.Controller
                     }
                 }
 
-                if (direction == Direction.RIGHT)
+                else if (direction == Direction.RIGHT)
                 {
                     if (positions.Contains(new Point { X = shot.X, Y = shot.Y + 1 }))
                     {
@@ -278,29 +299,26 @@ namespace BattleShip.Controller
                 }
             }
 
-            if(shots < 4)
-            {
-                shots++;
-            }
-            else
-            {
-                GenerateRandom(grid);
-
-            }
-            //computer turn
             //this is where we can move a ship
             if (activeGameModes.Contains(GameMode.MOVABLESHIPS))
             {
                 turn++;
                 if (turn % 5 == 0)
                 {
+                    Turn = true;
                     EnableCells(dgvPlayer);
                 }
                 else
                 {
+                    Turn = false;
                     DisableCells(dgvPlayer);
                 }
             }
+
+
+            //computer turn
+            GenerateRandom(grid);
+            
         }
 
         private void GenerateRandom(DataGridView grid)
@@ -340,11 +358,16 @@ namespace BattleShip.Controller
         private void UpdateGrid(Point position, DataGridView grid)
         {
             DataGridViewImageCell imgCell = new DataGridViewImageCell();
-            imgCell.Value = Properties.Resources.dotImage;
 
-            // if FOFB do this instead of line above
-            //string file = string.Format("_{0}", GetShipCount(position));
-            //imgCell.Value = Properties.Resources.ResourceManager.GetObject(file);
+            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+            {
+                string file = string.Format("_{0}", GetShipCount(position));
+                imgCell.Value = Properties.Resources.ResourceManager.GetObject(file);
+            }
+            else
+            {
+                imgCell.Value = Properties.Resources.dotImage;
+            }
 
             grid.Rows[position.X].Cells[position.Y] = imgCell;
             missedPositions.Add(position);

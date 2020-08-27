@@ -23,6 +23,7 @@ namespace BattleShip.Model
         public List<Point> viewPoints { get; set; }
         private Point shotPosition;
         public int gridSize;
+        public bool isSunkInSilenceMode;
 
         public Ship(int size, Color color, Point position, View type, int boardSize)
         {
@@ -71,6 +72,7 @@ namespace BattleShip.Model
 
             AddViewPoints();
         }
+
 
         private void AddImages()
         {
@@ -158,6 +160,21 @@ namespace BattleShip.Model
                         grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
                         ShowDeadCells(grid, cell.Positon);
                     }
+                }
+            }
+        }
+
+        public void sunkInSilencePlayer(DataGridView grid)
+        {
+            foreach (Cell cell in Cells)
+            {
+                DataGridViewImageCell imgCell = new DataGridViewImageCell();
+                imgCell.Value = cell.Img;
+                grid.Rows[cell.Positon.X].Cells[cell.Positon.Y] = imgCell;
+                if (!cell.Alive)
+                {
+                    grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
+                    ShowDeadCells(grid, cell.Positon);
                 }
             }
         }
@@ -251,6 +268,18 @@ namespace BattleShip.Model
                         grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
                         ShowDeadCells(grid, cell.Positon);
                     }
+                }
+            }
+        }
+
+        public void sunkInSilenceDraw(DataGridView grid)
+        {
+            foreach (Cell cell in Cells)
+            {
+                if (!cell.Alive)
+                {
+                    grid.Rows[cell.Positon.X].Cells[cell.Positon.Y].Style.BackColor = Color.Red;
+                    ShowDeadCells(grid, cell.Positon);
                 }
             }
         }

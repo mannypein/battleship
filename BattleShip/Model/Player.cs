@@ -22,6 +22,7 @@ namespace BattleShip.Controller
         public List<Point> missedPositions;
         public Ship selected;
         public int gridSize;
+
         public int turn;
         public List<GameMode> activeGameModes;
 
@@ -33,7 +34,13 @@ namespace BattleShip.Controller
             this.turn = 0;
             this.activeGameModes = gameModes;
 
-            this.gridSize = activeGameModes.Contains(GameMode.BIGBOARD) ? 20 : 10;
+            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+                gridSize = 8;
+            else if (activeGameModes.Contains(GameMode.BIGBOARD))
+                gridSize = 20;
+            else
+                gridSize = 10;
+
 
             this.amounts = new List<int>();
             this.positions = new List<Point>();
@@ -45,11 +52,31 @@ namespace BattleShip.Controller
                     positions.Add(new Point { X = i, Y = j });
                 }
             }
-            this.amounts.Add(3);
-            this.amounts.Add(2);
-            this.amounts.Add(2);
-            this.amounts.Add(1);
-            this.amounts.Add(1);
+            // FOFB needs 4 one sized ships
+            if (activeGameModes.Contains(GameMode.FOGOVERFISHERBANK))
+            {
+                this.amounts.Add(4);
+                this.amounts.Add(0);
+                this.amounts.Add(0);
+                this.amounts.Add(0);
+                this.amounts.Add(0);
+            }
+            else if (activeGameModes.Contains(GameMode.BIGBOARD))
+            {
+                this.amounts.Add(6);
+                this.amounts.Add(4);
+                this.amounts.Add(4);
+                this.amounts.Add(2);
+                this.amounts.Add(2);
+            }
+            else
+            {
+                this.amounts.Add(3);
+                this.amounts.Add(2);
+                this.amounts.Add(2);
+                this.amounts.Add(1);
+                this.amounts.Add(1);
+            }
         }
 
         public void SetGridView(DataGridView grid)
@@ -74,9 +101,12 @@ namespace BattleShip.Controller
 
         public void RemoveDeadShip()
         {
-            foreach (Point point in selected.viewPoints)
+            if (!activeGameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                positions.Remove(point);
+                foreach (Point point in selected.viewPoints)
+                {
+                    positions.Remove(point);
+                }
             }
         }
 

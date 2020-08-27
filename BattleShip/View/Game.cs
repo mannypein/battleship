@@ -14,7 +14,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.InteropServices;
 using System.Reflection;
-using BattleShip.View;
 
 namespace BattleShip
 {
@@ -41,6 +40,10 @@ namespace BattleShip
         Point shotPosition;
         private static int i = 0;
         public int gridSize;
+        public List<GameMode> gameModes = new List<GameMode>
+        {
+            GameMode.SUNKINSILENCE
+        };
 
 
         public static bool MuteClicked { get; set; }
@@ -48,18 +51,12 @@ namespace BattleShip
 
         public Game()
         {
-            List<GameMode> gameModes = new List<GameMode>
-            {
-                GameMode.MOVABLESHIPS
-            };
-
-            //Grid stuff
-            gridSize = 10;
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();
             player = new PlayerController(gameModes);
             player.dgvPlayer = dgvPlayer;
+            player.Turn = Turn;
             isFinished = false;
             score = 0;
             computer = new ComputerController(gameModes);
@@ -70,10 +67,14 @@ namespace BattleShip
             ShowPlayerView();
             ShowComputerView();
             this.Cursor = LoadCursorFromResource();
-
+            if (gameModes.Contains(GameMode.SUNKINSILENCE))
+            {
+                lblScore.Hide();
+                label3.Hide();
+            }
         }
 
-        
+
 
         public static Cursor LoadCursorFromResource()
         {
@@ -125,13 +126,17 @@ namespace BattleShip
             }
         }
 
+        //TODO here
         private void dgvPlayer_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
         {
             Point position = new Point { X = e.RowIndex, Y = e.ColumnIndex };
 
-            if (player.selected != null)
+            //player selected is the ship the player selected
+
+            if (player.selected != null && player.movable.Contains(player.selected))
             {
                 player.selected.AddPositions(position);
+
                 if (player.SearchShip())
                 {
                     Cursor.Current = Cursors.No;
@@ -142,6 +147,7 @@ namespace BattleShip
                 }
                 ShowPlayerView();
             }
+
             if (player.SearchShip(position))
             {
                 Cursor.Current = Cursors.SizeAll;
@@ -234,19 +240,21 @@ namespace BattleShip
         private void ComputerTimer_Tick(object sender, EventArgs e)
         {
             label2.Text = Turn ? "Your turn" : "Bot's turn";
-            lblScore.Text = score.ToString();
-            if (score < 0)
+            // if it is Sunk in Silence it will not show the user the score
+            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
             {
-                lblScore.ForeColor = Color.Red;
+                lblScore.Text = score.ToString();
+                if (score < 0)
+                {
+                    lblScore.ForeColor = Color.Red;
 
+                }
+                else if (score > 0)
+                {
+                    lblScore.ForeColor = Color.Green;
+                }
             }
-            else if (score > 0)
-            {
 
-                lblScore.ForeColor = Color.Green;
-
-
-            }
             if (!Turn)
             {
                 dgvComputer.Enabled = false;
@@ -305,23 +313,24 @@ namespace BattleShip
 
         private void dgvComputer_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            GameModeForm gameModeForm = new GameModeForm();
             if (GameStarted)
             {
-                     shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
-                     if (i >= 3 && GameModeForm.items.Contains(""))
-                     {
-                        computer.Shoot(shotPosition, dgvComputer);
-                         Turn = false;
-                         dgvComputer.Enabled = false;
-                         i = 0;
-                     }
+                shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
+
+                if (gameModes.Contains(GameMode.SPEEDYRULES) && i >= 3)
+                {
+                    computer.Shoot(shotPosition, dgvComputer);
+                    Turn = false;
+                    dgvComputer.Enabled = false;
+                    i = 0;
+                }
                 else
                 {
-                        computer.Shoot(shotPosition, dgvComputer);
+                    computer.Shoot(shotPosition, dgvComputer);
                     i++;
                 }
-                      computer.ShowShips(dgvComputer);
+
+                computer.ShowShips(dgvComputer);
             }
         }
 
@@ -334,9 +343,9 @@ namespace BattleShip
         private void ShootTimer_Tick(object sender, EventArgs e)
         {
             
-                Random random = new Random();
-                ShootTimer.Interval = random.Next(1000, 2000);
-                player.Shoot(dgvPlayer);
+            Random random = new Random();
+            ShootTimer.Interval = random.Next(1000, 2000);
+            player.Shoot(dgvPlayer);
             if(i >= 3)
             {
                 Turn = !player.found;
@@ -346,17 +355,34 @@ namespace BattleShip
             {
                 i++;
             }
-                player.ShowShips(dgvPlayer);
+            player.ShowShips(dgvPlayer);
+
+            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
+            {
                 lblScore.Text = score.ToString();
                 if (score < 0)
-                {
-                    score = 0;
 
-                }
-                if (score > 0)
                 {
-                    lblScore.ForeColor = Color.Green;
+                    Turn = !player.found;
+                    i = 0;
                 }
+                else
+                {
+                    i++;
+                }
+            }
+            player.ShowShips(dgvPlayer);
+            lblScore.Text = score.ToString();
+            if (score < 0)
+            {
+                score = 0;
+
+            }
+            if (score > 0)
+            {
+                lblScore.ForeColor = Color.Green;
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
