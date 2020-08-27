@@ -21,7 +21,7 @@ namespace BattleShip.Controller
         public List<Point> positions;
         public List<Point> missedPositions;
         public Ship selected;
-
+        public int gridSize;
         public int turn;
         public List<GameMode> activeGameModes;
 
