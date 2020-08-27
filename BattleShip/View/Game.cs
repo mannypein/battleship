@@ -38,8 +38,7 @@ namespace BattleShip
         ComputerController computer;
         Point startedPosition;
         Point shotPosition;
-        private static int i = 0;
-        public int gridSize;
+        private int i = 0;
         public List<GameMode> gameModes = new List<GameMode>
         {
             //GameMode.SUNKINSILENCE
@@ -347,12 +346,13 @@ namespace BattleShip
         private void ShootTimer_Tick(object sender, EventArgs e)
         {
             
-            Random random = new Random();
-            ShootTimer.Interval = random.Next(1000, 2000);
             if(gameModes.Contains(GameMode.SPEEDYRULES))
             {
-                if(i > 3)
+                Random random = new Random();
+                ShootTimer.Interval = random.Next(1000, 2000);
+                if(i >= 3)
                 {
+                    player.Shoot(dgvPlayer);
                     Turn = !player.found;
                     i = 0;
                 }
@@ -361,10 +361,17 @@ namespace BattleShip
                     player.Shoot(dgvPlayer);
                     i++;
                 }
+                player.ShowShips(dgvPlayer);
             }
-         player.ShowShips(dgvPlayer);
-
-            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
+            else
+            {
+                Random random = new Random();
+                ShootTimer.Interval = random.Next(1000, 2000);
+                player.Shoot(dgvPlayer);
+                player.ShowShips(dgvPlayer);
+                Turn = !player.found;
+            }
+            if (gameModes.Contains(GameMode.SUNKINSILENCE))
             {
                 lblScore.Text = score.ToString();
                 if (score < 0)
@@ -378,17 +385,19 @@ namespace BattleShip
                     i++;
                 }
             }
-            player.ShowShips(dgvPlayer);
-            lblScore.Text = score.ToString();
-            if (score < 0)
+            else
             {
-                score = 0;
+                if (score < 0)
+                {
+                    score = 0;
 
+                }
+                if (score > 0)
+                {
+                    lblScore.ForeColor = Color.Green;
+                }
             }
-            if (score > 0)
-            {
-                lblScore.ForeColor = Color.Green;
-            }
+            lblScore.Text = score.ToString();
 
         }
 
