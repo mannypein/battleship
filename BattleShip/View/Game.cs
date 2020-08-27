@@ -42,7 +42,8 @@ namespace BattleShip
         public int gridSize;
         public List<GameMode> gameModes = new List<GameMode>
         {
-            GameMode.SUNKINSILENCE
+            //GameMode.SUNKINSILENCE
+            GameMode.SPEEDYRULES
         };
 
 
@@ -317,17 +318,20 @@ namespace BattleShip
             {
                 shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
 
-                if (gameModes.Contains(GameMode.SPEEDYRULES) && i >= 3)
+                if (gameModes.Contains(GameMode.SPEEDYRULES))
                 {
-                    computer.Shoot(shotPosition, dgvComputer);
-                    Turn = false;
-                    dgvComputer.Enabled = false;
-                    i = 0;
-                }
-                else
-                {
-                    computer.Shoot(shotPosition, dgvComputer);
-                    i++;
+                    if (i >= 3)
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        Turn = false;
+                        dgvComputer.Enabled = false;
+                        i = 0;
+                    }
+                    else
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        i++;
+                    }
                 }
 
                 computer.ShowShips(dgvComputer);
@@ -345,17 +349,20 @@ namespace BattleShip
             
             Random random = new Random();
             ShootTimer.Interval = random.Next(1000, 2000);
-            player.Shoot(dgvPlayer);
-            if(i >= 3)
+            if(gameModes.Contains(GameMode.SPEEDYRULES))
             {
-                Turn = !player.found;
-                i = 0;
+                if(i > 3)
+                {
+                    Turn = !player.found;
+                    i = 0;
+                }
+                else
+                {
+                    player.Shoot(dgvPlayer);
+                    i++;
+                }
             }
-            else
-            {
-                i++;
-            }
-            player.ShowShips(dgvPlayer);
+         player.ShowShips(dgvPlayer);
 
             if (!gameModes.Contains(GameMode.SUNKINSILENCE))
             {
