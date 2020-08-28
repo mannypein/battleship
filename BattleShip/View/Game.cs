@@ -43,7 +43,9 @@ namespace BattleShip
         private int i = 0;
         public List<GameMode> gameModes = new List<GameMode>
         {
-            
+            //GameMode.SUNKINSILENCE
+            //GameMode.SPEEDYRULES
+            GameMode.MOVABLESHIPS
         };
 
         public GameMode GetGameMode(string item)
@@ -348,6 +350,8 @@ namespace BattleShip
             if (GameStarted)
             {
                 shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
+                Turn = false;
+                dgvComputer.Enabled = false;
 
                 if (gameModes.Contains(GameMode.SPEEDYRULES))
                 {
