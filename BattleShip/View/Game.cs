@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using BattleShip.View;
 
 namespace BattleShip
 {
@@ -24,7 +25,8 @@ namespace BattleShip
         SPEEDYRULES,
         SALVO,
         FOGOVERFISHERBANK,
-        BIGBOARD
+        BIGBOARD,
+        NORMAL
     }
 
     partial class Game : Form
@@ -46,12 +48,34 @@ namespace BattleShip
             GameMode.MOVABLESHIPS
         };
 
+        public GameMode GetGameMode(string item)
+        {
+            switch (item)
+            {
+                case "Salvo":
+                    return GameMode.SALVO;
+                case "Speedy Rules":
+                    return GameMode.SPEEDYRULES;
+                case "FOFB":
+                    return GameMode.FOGOVERFISHERBANK;
+                case "Big Board":
+                    return GameMode.BIGBOARD;
+                case "Sunk In Silence":
+                    return GameMode.SUNKINSILENCE;
+                case "Moveable Ships":
+                    return GameMode.MOVABLESHIPS;
+                default:
+                    return GameMode.NORMAL;
+            }
+        }
+
 
         public static bool MuteClicked { get; set; }
         private bool saved = false;
 
         public Game()
         {
+            
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();
@@ -91,6 +115,7 @@ namespace BattleShip
 
         public void UpdateState()
         {
+
             player = state.Player;
             computer = state.Computer;
             ShowPlayerView();
@@ -196,6 +221,14 @@ namespace BattleShip
         private void btnStart_Click(object sender, EventArgs e)
         {
             //this is where the board locks up
+            if(gameModes.Count != 0)
+            {
+                gameModes.Add(GetGameMode(GameModeForm.items[0]));
+            }
+            else
+            {
+                gameModes.Add(GameMode.NORMAL);
+            }
             player.DisableCells(dgvPlayer);
             player.ShowShips(dgvPlayer);
             ComputerTimer.Start();
@@ -335,6 +368,30 @@ namespace BattleShip
                         i++;
                     }
                 }
+                if (gameModes.Contains(GameMode.SALVO))
+                {
+                    if (i >= player.movable.Where(ship => !ship.Destroyed()).Count() - 1)
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        Turn = false;
+                        dgvComputer.Enabled = false;
+                        i = 0;
+                    }
+                    else
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        i++;
+                    }
+                }
+                if (gameModes.Contains(GameMode.NORMAL))
+                {
+                    shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
+                    if (computer.Shoot(shotPosition, dgvComputer))
+                    {
+                        Turn = false;
+                        dgvComputer.Enabled = false;
+                    }
+                }
 
                 computer.ShowShips(dgvComputer);
             }
@@ -365,8 +422,25 @@ namespace BattleShip
                     i++;
                 }
                 player.ShowShips(dgvPlayer);
+            } 
+            else if(gameModes.Contains(GameMode.SALVO))
+            {
+                Random random = new Random();
+                ShootTimer.Interval = random.Next(1000, 2000);
+                if(i >= computer.movable.Where(ship => !ship.Destroyed()).Count() - 1)
+                {
+                    player.Shoot(dgvPlayer);
+                    Turn = !player.found;
+                    i = 0;
+                }
+                else
+                {
+                    player.Shoot(dgvPlayer);
+                    i++;
+                }
+                player.ShowShips(dgvPlayer);
             }
-            else
+            else if(gameModes.Contains(GameMode.NORMAL))
             {
                 Random random = new Random();
                 ShootTimer.Interval = random.Next(1000, 2000);
@@ -374,7 +448,7 @@ namespace BattleShip
                 player.ShowShips(dgvPlayer);
                 Turn = !player.found;
             }
-            if (gameModes.Contains(GameMode.SUNKINSILENCE))
+            else if (gameModes.Contains(GameMode.SUNKINSILENCE))
             {
                 lblScore.Text = score.ToString();
                 if (score < 0)
@@ -388,7 +462,7 @@ namespace BattleShip
                     i++;
                 }
             }
-            else
+            else if(gameModes.Contains(GameMode.NORMAL))
             {
                 if (score < 0)
                 {
