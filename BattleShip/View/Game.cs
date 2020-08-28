@@ -221,7 +221,7 @@ namespace BattleShip
         private void btnStart_Click(object sender, EventArgs e)
         {
             //this is where the board locks up
-            if(gameModes.Count != 0)
+            if(GameModeForm.items.Count != 0)
             {
                 gameModes.Add(GetGameMode(GameModeForm.items[0]));
             }
