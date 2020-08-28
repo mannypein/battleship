@@ -251,7 +251,7 @@ namespace BattleShip
         private void btnContinue_Click(object sender, EventArgs e)
         {
 
-            UpdateContinue();
+            //UpdateContinue();
         }
 
         private void btnContinue_MouseEnter(object sender, EventArgs e)

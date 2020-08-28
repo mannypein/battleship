@@ -34,6 +34,13 @@ namespace BattleShip.View
         // I created this accidentally in the designer and now it's dangerous to delete
         private void button1_Click(object sender, EventArgs e)
         {
+            for(int i = 0; i < (checkedListBox1.Items.Count - 1); i++)
+            {
+                if (checkedListBox1.GetItemChecked(i))
+                {
+                    items.Add(checkedListBox1.Items[i].ToString());
+                }
+            }
             Game game = new Game();
             this.Hide();
             DialogResult result = game.ShowDialog();
@@ -52,49 +59,34 @@ namespace BattleShip.View
                 }
                 this.Show();
             }
-            for(int i = 0; i < (checkedListBox1.Items.Count - 1); i++)
-            {
-                if (checkedListBox1.GetItemChecked(i))
-                {
-                    items.Add(checkedListBox1.Items[i].ToString());
-                }
-            }
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if((checkedListBox1.GetItemCheckState(0) == CheckState.Checked && counterOne == 0))
+            if(checkedListBox1.GetItemCheckState(0) == CheckState.Checked)
             {
-                counterOne++;
-                checkedListBox1.Items.RemoveAt(2);
-                checkedListBox1.Items.RemoveAt(1);
+                checkedListBox1.Enabled = false;
             }
-            else if((checkedListBox1.GetItemCheckState(1) == CheckState.Checked && counterOne == 0))
+            else if(checkedListBox1.GetItemCheckState(1) == CheckState.Checked)
             {
-                counterOne++;
-                checkedListBox1.Items.RemoveAt(2);
-                checkedListBox1.Items.RemoveAt(0);
+                checkedListBox1.Enabled = false;
             }
-            else if((checkedListBox1.GetItemCheckState(3) == CheckState.Checked && counterThree == 0))
+            else if(checkedListBox1.GetItemCheckState(3) == CheckState.Checked)
             {
-                counterThree++;
-                checkedListBox1.Items.RemoveAt(2);
-                checkedListBox1.Items.RemoveAt(1);
-                checkedListBox1.Items.RemoveAt(0);
+                checkedListBox1.Enabled = false;
             }
-            else if((checkedListBox1.GetItemCheckState(4) == CheckState.Checked && counterThree == 0))
+            else if(checkedListBox1.GetItemCheckState(4) == CheckState.Checked )
             {
-                counterFour++;
-                checkedListBox1.Items.RemoveAt(2);
+                checkedListBox1.Enabled = false;
             }
-            else if(checkedListBox1.GetItemCheckState(2) == CheckState.Checked && counterTwo == 0)
+            else if(checkedListBox1.GetItemCheckState(2) == CheckState.Checked)
             {
-                counterTwo++;
-                checkedListBox1.Items.RemoveAt(4);
-                checkedListBox1.Items.RemoveAt(3);
-                checkedListBox1.Items.RemoveAt(1);
-                checkedListBox1.Items.RemoveAt(0);
+                checkedListBox1.Enabled = false;
 
+            }
+            else if(checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
+            {
+                checkedListBox1.Enabled = false;
             }
         }
     }

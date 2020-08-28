@@ -12,10 +12,13 @@ namespace BattleShip.Controller
     [Serializable]
     class ComputerController : Player
     {
+        public List<Ship> movable = new List<Ship>();
         public ComputerController(List<GameMode> gameModes) : base(gameModes)
         {
             isPlayer = false;
             Random();
+
+            movable = ships;
         }
 
         public bool Shoot(Point position, DataGridView grid)
