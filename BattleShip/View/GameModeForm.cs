@@ -29,7 +29,7 @@ namespace BattleShip.View
             InitializeComponent();
         }
 
-        Game game = new Game();
+        //Game game = new Game();
 
         // I created this accidentally in the designer and now it's dangerous to delete
         private void button1_Click(object sender, EventArgs e)
@@ -46,17 +46,18 @@ namespace BattleShip.View
             DialogResult result = game.ShowDialog();
             if (result == DialogResult.Cancel)
             {
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string fileName = path + "/game.bs";
-                using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
-                {
-                    IFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(fileStream, game.state);
-                }
-                if(Game.isFinished)
-                {
-                    File.Delete(fileName);
-                }
+                //string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                //string fileName = path + "/game.bs";
+                //using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
+                //{
+                //    IFormatter formatter = new BinaryFormatter();
+                //    formatter.Serialize(fileStream, game.state);
+                //}
+                //if(Game.isFinished)
+                //{
+                //    File.Delete(fileName);
+                //}
+                //checkedListBox1.Enabled = true;
                 this.Show();
             }
         }
@@ -75,7 +76,7 @@ namespace BattleShip.View
             {
                 checkedListBox1.Enabled = false;
             }
-            else if(checkedListBox1.GetItemCheckState(4) == CheckState.Checked )
+            else if(checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
             {
                 checkedListBox1.Enabled = false;
             }

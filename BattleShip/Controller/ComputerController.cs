@@ -76,7 +76,7 @@ namespace BattleShip.Controller
                 }
                 else
                 {
-                    imgCell.Value = Properties.Resources.dotImage;
+                    imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                 }
                 missedPositions.Add(position);
                 grid.Rows[position.X].Cells[position.Y] = imgCell;
