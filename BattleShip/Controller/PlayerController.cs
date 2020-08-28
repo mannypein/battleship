@@ -314,14 +314,17 @@ namespace BattleShip.Controller
                     DisableCells(dgvPlayer);
                 }
             }
+            else
+            {
+                Turn = false;
+            }
 
 
             //computer turn
             GenerateRandom(grid);
-            
         }
 
-        private void GenerateRandom(DataGridView grid)
+        public void GenerateRandom(DataGridView grid)
         {
             if (!Game.isFinished)
             {
@@ -353,8 +356,8 @@ namespace BattleShip.Controller
                 }
                 UpdateGrid(position, grid);
             }
-
         }
+
         private void UpdateGrid(Point position, DataGridView grid)
         {
             DataGridViewImageCell imgCell = new DataGridViewImageCell();
