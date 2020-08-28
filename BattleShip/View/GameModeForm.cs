@@ -69,25 +69,25 @@ namespace BattleShip.View
                 checkedListBox1.Items.RemoveAt(2);
                 checkedListBox1.Items.RemoveAt(1);
             }
-            if((checkedListBox1.GetItemCheckState(1) == CheckState.Checked && counterOne == 0))
+            else if((checkedListBox1.GetItemCheckState(1) == CheckState.Checked && counterOne == 0))
             {
                 counterOne++;
                 checkedListBox1.Items.RemoveAt(2);
                 checkedListBox1.Items.RemoveAt(0);
             }
-            if((checkedListBox1.GetItemCheckState(3) == CheckState.Checked && counterThree == 0))
+            else if((checkedListBox1.GetItemCheckState(3) == CheckState.Checked && counterThree == 0))
             {
                 counterThree++;
                 checkedListBox1.Items.RemoveAt(2);
                 checkedListBox1.Items.RemoveAt(1);
                 checkedListBox1.Items.RemoveAt(0);
             }
-            if((checkedListBox1.GetItemCheckState(4) == CheckState.Checked && counterThree == 0))
+            else if((checkedListBox1.GetItemCheckState(4) == CheckState.Checked && counterThree == 0))
             {
                 counterFour++;
                 checkedListBox1.Items.RemoveAt(2);
             }
-            if(checkedListBox1.GetItemCheckState(2) == CheckState.Checked && counterTwo == 0)
+            else if(checkedListBox1.GetItemCheckState(2) == CheckState.Checked && counterTwo == 0)
             {
                 counterTwo++;
                 checkedListBox1.Items.RemoveAt(4);

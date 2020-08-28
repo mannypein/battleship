@@ -38,11 +38,11 @@ namespace BattleShip
         ComputerController computer;
         Point startedPosition;
         Point shotPosition;
-        private static int i = 0;
-        public int gridSize;
+        private int i = 0;
         public List<GameMode> gameModes = new List<GameMode>
         {
-            GameMode.SUNKINSILENCE
+            //GameMode.SUNKINSILENCE
+            GameMode.SPEEDYRULES
         };
 
 
@@ -317,17 +317,20 @@ namespace BattleShip
             {
                 shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
 
-                if (gameModes.Contains(GameMode.SPEEDYRULES) && i >= 3)
+                if (gameModes.Contains(GameMode.SPEEDYRULES))
                 {
-                    computer.Shoot(shotPosition, dgvComputer);
-                    Turn = false;
-                    dgvComputer.Enabled = false;
-                    i = 0;
-                }
-                else
-                {
-                    computer.Shoot(shotPosition, dgvComputer);
-                    i++;
+                    if (i >= 3)
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        Turn = false;
+                        dgvComputer.Enabled = false;
+                        i = 0;
+                    }
+                    else
+                    {
+                        computer.Shoot(shotPosition, dgvComputer);
+                        i++;
+                    }
                 }
 
                 computer.ShowShips(dgvComputer);
@@ -343,21 +346,32 @@ namespace BattleShip
         private void ShootTimer_Tick(object sender, EventArgs e)
         {
             
-            Random random = new Random();
-            ShootTimer.Interval = random.Next(1000, 2000);
-            player.Shoot(dgvPlayer);
-            if(i >= 3)
+            if(gameModes.Contains(GameMode.SPEEDYRULES))
             {
-                Turn = !player.found;
-                i = 0;
+                Random random = new Random();
+                ShootTimer.Interval = random.Next(1000, 2000);
+                if(i >= 3)
+                {
+                    player.Shoot(dgvPlayer);
+                    Turn = !player.found;
+                    i = 0;
+                }
+                else
+                {
+                    player.Shoot(dgvPlayer);
+                    i++;
+                }
+                player.ShowShips(dgvPlayer);
             }
             else
             {
-                i++;
+                Random random = new Random();
+                ShootTimer.Interval = random.Next(1000, 2000);
+                player.Shoot(dgvPlayer);
+                player.ShowShips(dgvPlayer);
+                Turn = !player.found;
             }
-            player.ShowShips(dgvPlayer);
-
-            if (!gameModes.Contains(GameMode.SUNKINSILENCE))
+            if (gameModes.Contains(GameMode.SUNKINSILENCE))
             {
                 lblScore.Text = score.ToString();
                 if (score < 0)
@@ -371,17 +385,19 @@ namespace BattleShip
                     i++;
                 }
             }
-            player.ShowShips(dgvPlayer);
-            lblScore.Text = score.ToString();
-            if (score < 0)
+            else
             {
-                score = 0;
+                if (score < 0)
+                {
+                    score = 0;
 
+                }
+                if (score > 0)
+                {
+                    lblScore.ForeColor = Color.Green;
+                }
             }
-            if (score > 0)
-            {
-                lblScore.ForeColor = Color.Green;
-            }
+            lblScore.Text = score.ToString();
 
         }
 

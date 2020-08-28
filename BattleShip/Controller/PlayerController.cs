@@ -124,7 +124,7 @@ namespace BattleShip.Controller
                     return;
                 }
 
-                if (direction == Direction.DOWN)
+                /*if (direction == Direction.DOWN)
                 {
                     if (positions.Contains(new Point { X = shot.X + 1, Y = shot.Y }))
                     {
@@ -296,7 +296,7 @@ namespace BattleShip.Controller
                     shot = first;
                     Shoot(grid);
                     return;
-                }
+                }*/
             }
 
             //this is where we can move a ship
