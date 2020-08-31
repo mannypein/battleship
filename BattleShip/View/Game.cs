@@ -80,6 +80,11 @@ namespace BattleShip
                 {
                     gameModes.Add(GameMode.NORMAL);
                 }
+
+                if (gameModes.Contains(GameMode.BIGBOARD))
+                {
+                    gameModes.Add(GameMode.SPEEDYRULES);
+                }
             }
             else
             {
