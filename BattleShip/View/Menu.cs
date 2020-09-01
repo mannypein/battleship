@@ -57,9 +57,9 @@ namespace BattleShip
             GameModeForm gameModeForm = new GameModeForm();
             this.Hide();
             DialogResult result = gameModeForm.ShowDialog();
-            /*if (result == DialogResult.Cancel)
+            if (result == DialogResult.Cancel)
             {
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                /*string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 string fileName = path + "/game.bs";
                 using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
                 {
@@ -71,11 +71,11 @@ namespace BattleShip
                 {
                     File.Delete(fileName);
                     btnContinue.Enabled = false;
-                }
+                }*/
                 this.Show();
                 if(!MuteClicked)
                     sound.PlayLooping();
-            }*/
+            }
             if(result == DialogResult.Abort)
             {
                 newGame();

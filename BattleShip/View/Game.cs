@@ -43,9 +43,6 @@ namespace BattleShip
         private int i = 0;
         public List<GameMode> gameModes = new List<GameMode>
         {
-            //GameMode.SUNKINSILENCE
-            //GameMode.SPEEDYRULES
-            GameMode.MOVABLESHIPS
         };
 
         public GameMode GetGameMode(string item)
@@ -60,7 +57,7 @@ namespace BattleShip
                     return GameMode.FOGOVERFISHERBANK;
                 case "Big Board":
                     return GameMode.BIGBOARD;
-                case "Sunk In Silence":
+                case "Sunk in Silence":
                     return GameMode.SUNKINSILENCE;
                 case "Moveable Ships":
                     return GameMode.MOVABLESHIPS;
@@ -75,7 +72,25 @@ namespace BattleShip
 
         public Game()
         {
-            
+            if (GameModeForm.items.Count != 0)
+            {
+                gameModes.Add(GetGameMode(GameModeForm.items[0]));
+
+                if(gameModes.Contains(GameMode.BIGBOARD) || gameModes.Contains(GameMode.FOGOVERFISHERBANK) || gameModes.Contains(GameMode.MOVABLESHIPS) || gameModes.Contains(GameMode.SUNKINSILENCE))
+                {
+                    gameModes.Add(GameMode.NORMAL);
+                }
+
+                if (gameModes.Contains(GameMode.BIGBOARD))
+                {
+                    gameModes.Add(GameMode.SPEEDYRULES);
+                }
+            }
+            else
+            {
+                gameModes.Add(GameMode.NORMAL);
+            }
+
             DoubleBuffered = true;
             Turn = true;
             InitializeComponent();
@@ -96,6 +111,11 @@ namespace BattleShip
             {
                 lblScore.Hide();
                 label3.Hide();
+            }
+            else
+            {
+                lblScore.Show();
+                label3.Show();
             }
         }
 
@@ -221,14 +241,7 @@ namespace BattleShip
         private void btnStart_Click(object sender, EventArgs e)
         {
             //this is where the board locks up
-            if(GameModeForm.items.Count != 0)
-            {
-                gameModes.Add(GetGameMode(GameModeForm.items[0]));
-            }
-            else
-            {
-                gameModes.Add(GameMode.NORMAL);
-            }
+            
             player.DisableCells(dgvPlayer);
             player.ShowShips(dgvPlayer);
             ComputerTimer.Start();
@@ -350,8 +363,8 @@ namespace BattleShip
             if (GameStarted)
             {
                 shotPosition = new Point { X = e.RowIndex, Y = e.ColumnIndex };
-                Turn = false;
-                dgvComputer.Enabled = false;
+                //Turn = false;
+                //dgvComputer.Enabled = false;
 
                 if (gameModes.Contains(GameMode.SPEEDYRULES))
                 {

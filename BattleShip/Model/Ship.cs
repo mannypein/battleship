@@ -93,25 +93,25 @@ namespace BattleShip.Model
             if (position.X - 1 >= 0 && position.Y - 1 >= 0)
             {
                 DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                imgCell.Value = Properties.Resources.dotImage;
+                imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                 grid.Rows[position.X - 1].Cells[position.Y - 1] = imgCell;
             }
             if (position.X - 1 >= 0 && position.Y + 1 < gridSize)
             {
                 DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                imgCell.Value = Properties.Resources.dotImage;
+                imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                 grid.Rows[position.X - 1].Cells[position.Y + 1] = imgCell;
             }
             if (position.X + 1 < gridSize && position.Y - 1 >= 0)
             {
                 DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                imgCell.Value = Properties.Resources.dotImage;
+                imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                 grid.Rows[position.X + 1].Cells[position.Y - 1] = imgCell;
             }
             if (position.X + 1 < gridSize && position.Y + 1 < gridSize)
             {
                 DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                imgCell.Value = Properties.Resources.dotImage;
+                imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                 grid.Rows[position.X + 1].Cells[position.Y + 1] = imgCell;
             }
         }
@@ -127,7 +127,7 @@ namespace BattleShip.Model
                         if (!Cells.Exists(cell => cell.Positon.Equals(point)))
                         {
                             DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                            imgCell.Value = Properties.Resources.dotImage;
+                            imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                             grid.Rows[point.X].Cells[point.Y] = imgCell;
                         }
                     }
@@ -237,7 +237,7 @@ namespace BattleShip.Model
                         if (!Cells.Exists(cell => cell.Positon.Equals(point)))
                         {
                             DataGridViewImageCell imgCell = new DataGridViewImageCell();
-                            imgCell.Value = Properties.Resources.dotImage;
+                            imgCell.Value = new Bitmap(Properties.Resources.dotImage, new Size(360 / gridSize, 360 / gridSize));
                             grid.Rows[point.X].Cells[point.Y] = imgCell;
                         }
                     }
