@@ -18,18 +18,12 @@ namespace BattleShip.View
     {
 
         public static List<string> items = new List<string>();
-        private static int counterOne = 0;
-        private static int counterTwo = 0;
-        private static int counterThree = 0;
-        private static int counterFour = 0;
-
 
         public GameModeForm()
         {
             InitializeComponent();
         }
 
-        //Game game = new Game();
 
         // I created this accidentally in the designer and now it's dangerous to delete
         private void button1_Click(object sender, EventArgs e)
