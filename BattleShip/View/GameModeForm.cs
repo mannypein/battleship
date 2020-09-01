@@ -46,6 +46,7 @@ namespace BattleShip.View
             DialogResult result = game.ShowDialog();
             if (result == DialogResult.Cancel)
             {
+                items.Clear();
                 //string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 //string fileName = path + "/game.bs";
                 //using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
@@ -53,11 +54,10 @@ namespace BattleShip.View
                 //    IFormatter formatter = new BinaryFormatter();
                 //    formatter.Serialize(fileStream, game.state);
                 //}
-                //if(Game.isFinished)
+                //if (Game.isFinished)
                 //{
                 //    File.Delete(fileName);
                 //}
-                //checkedListBox1.Enabled = true;
                 this.Show();
             }
         }
@@ -76,7 +76,7 @@ namespace BattleShip.View
             {
                 checkedListBox1.Enabled = false;
             }
-            else if(checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
+            else if(checkedListBox1.GetItemCheckState(4) == CheckState.Checked )
             {
                 checkedListBox1.Enabled = false;
             }

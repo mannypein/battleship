@@ -112,6 +112,11 @@ namespace BattleShip
                 lblScore.Hide();
                 label3.Hide();
             }
+            else
+            {
+                lblScore.Show();
+                label3.Show();
+            }
         }
 
 
